@@ -1,0 +1,19 @@
+class Padding(object):
+    def __init__(self, size):
+        self.size = size
+
+    def __call__(self, img):
+        w = img.size[0]
+        h = img.size[1]
+        real_h = int(self.size[0])
+        real_w = int(w / h * real_h)
+
+        img = img.resize((real_w,real_h))
+        # left top right bottom
+        right = self.size[1] - real_w
+        if right>0:
+            img = ImageOps.expand(img, border=(0, 0, int(right), 0), fill=0)
+        else:
+            img = img.resize((self.size[1],real_h))
+        # img.show()
+        return img
